@@ -26,6 +26,14 @@ module.exports = (pool) => {
     return res.rowCount ? new Item(res.rows[0]) : null
   }
 
+  db.findUserItem = async (uid) => {
+    const res = await pool.query(
+      'SELECT * FROM Items WHERE uid = $1',
+      [uid]
+    )
+    return res.rows.map(row => new Item(row))
+  }
+
   db.updateItem = async (id, item) => {
     const res = await pool.query(
       'UPDATE Items SET name=$2, quantity=$3, uid=$4 WHERE id=$1 RETURNING *',

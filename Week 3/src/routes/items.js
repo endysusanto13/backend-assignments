@@ -5,7 +5,6 @@ module.exports = (db) => {
   const router = express.Router()
   
   router.post('/', async (req, res, next) => {
-    console.log(`In router post ${req.uid}`)
     const uid = req.uid
     const { name, quantity } = req.body
     const newItem = new Item({ name, quantity, uid })
@@ -16,6 +15,14 @@ module.exports = (db) => {
   router.get('/', async (req, res, next) => {
     const items = await db.findAllItems()
     res.send(items)
+  })
+
+  router.get('/user/:uid', async (req, res, next) => {
+    const uid = req.params.uid
+    const items = await db.findUserItem(uid)
+    if (items) {
+      res.send(items)
+    } 
   })
 
   router.get('/:id', async (req, res, next) => {
