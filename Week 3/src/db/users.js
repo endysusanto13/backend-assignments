@@ -19,5 +19,13 @@ module.exports = (pool) => {
     return res.rowCount ? new User(res.rows[0]) : null
   }
 
+  db.findUserByUserId = async (uid) => {
+    const res = await pool.query(
+      'SELECT * FROM Users WHERE id = $1',
+      [uid]
+    )
+    return res.rowCount ? new User(res.rows[0]) : null
+  }
+
   return db
 }

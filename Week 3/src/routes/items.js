@@ -19,10 +19,14 @@ module.exports = (db) => {
 
   router.get('/user/:uid', async (req, res, next) => {
     const uid = req.params.uid
-    const items = await db.findUserItem(uid)
-    if (items) {
-      res.send(items)
-    } 
+    const user = await db.findUserByUserId(uid)
+    
+    if (!user) {
+      res.status(400).send(`User id ${uid} not found`)
+    } else {
+      const items = await db.findUserItem(uid)
+      items && res.send(items)
+    }
   })
 
   router.get('/:id', async (req, res, next) => {
