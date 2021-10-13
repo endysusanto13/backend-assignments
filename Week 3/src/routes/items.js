@@ -36,12 +36,20 @@ module.exports = (db) => {
   })
 
   router.put('/:id', async (req, res, next) => {
-    const uid = req.uid
+    const requesterUid = req.uid
     const id = req.params.id
-    const { name, quantity } = req.body
-    const updatedItem = new Item({ name, quantity, uid })
-    const item = await db.updateItem(id, updatedItem)
-    res.send(item)
+    const item = await db.findItem(id)
+    
+    if (!item) 
+      res.status(400).send(`Item id ${id} not found`)
+    else if (item.uid !== requesterUid)
+      res.status(401).send('Unauthorized') 
+    else {
+      const { name, quantity } = req.body
+      const updatedItem = new Item({ name, quantity, uid : requesterUid })
+      const item = await db.updateItem(id, updatedItem)
+      res.send(item)
+    }
   })
 
   router.delete('/:id', async (req, res, next) => {

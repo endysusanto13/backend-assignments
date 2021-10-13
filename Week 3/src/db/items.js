@@ -13,7 +13,7 @@ module.exports = (pool) => {
   
   db.findAllItems = async () => {
     const res = await pool.query(
-      'SELECT * FROM Items'
+      'SELECT * FROM Items ORDER BY id'
     )
     return res.rows.map(row => new Item(row))
   }
