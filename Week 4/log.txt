@@ -1,0 +1,7 @@
+Connected to RabbitMQ
+Connected to channel
+ [*] Waiting for messages in amq.gen-B60dp453Wd-zk_shFJAduA. To exit press CTRL+C
+ [x] I'm alive at Fri Oct 15 2021 17:47:00 GMT+0800 (Singapore Standard Time)
+ [x] I'm alive at Fri Oct 15 2021 17:48:00 GMT+0800 (Singapore Standard Time)
+ [x] I'm alive at Fri Oct 15 2021 17:49:00 GMT+0800 (Singapore Standard Time)
+ [x] I'm alive at Fri Oct 15 2021 17:50:00 GMT+0800 (Singapore Standard Time)
