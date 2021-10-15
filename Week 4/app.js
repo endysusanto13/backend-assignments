@@ -36,6 +36,27 @@ app.ws('/heartbeat', (ws, req) => {
   })
 })
 
+// -- AMQP Section --
+amqp.connect('amqp://localhost:5672', (error0, connection) => {
+  if (error0) { throw error0 } 
+  else { console.log('Connected to RabbitMQ') }
+  
+  connection.createChannel((error1, channel) => {
+    if (error1) { throw error1 }
+    else { console.log('Connected to channel') }
+
+    const exchange = 'heartbeat'
+    
+    channel.assertExchange(exchange, 'fanout', {
+      // Durability is not required for heartbeat messages
+      durable: false
+    })
+
+    const heartbeatAmqp = Heartbeat(channel, exchange)
+    heartbeatAmqp()
+  });
+});
+
 heartbeatServer()
 
 const PORT = 3000

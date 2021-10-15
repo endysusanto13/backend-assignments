@@ -9,6 +9,8 @@ module.exports = (module, exchange) => {
       let msg = heartbeat1MinMsg + new Date()
       // Use ws.send() method if websocket is injected
       if (module.send) { module.send(msg) } 
+      // Use channel.publish() method if amqp channel is injected
+      else if (exchange && module.publish) { module.publish(exchange, '', Buffer.from(msg)) } 
       // Print on server if console is injected
       else if (module.log) { module.log(msg) } 
       // If nothin is injected
@@ -19,6 +21,7 @@ module.exports = (module, exchange) => {
     cron.schedule('42 * * * *', () => {
       let msg = heartbeat42MinMsg
       if (module.send) { module.send(msg) } 
+      else if (exchange && module.publish) { module.publish(exchange, '', Buffer.from(msg)) } 
       else if (module.log) { module.log(msg) }
       else { console.log("Server fails to send heartbeat on the 42nd minute.") }
     })
